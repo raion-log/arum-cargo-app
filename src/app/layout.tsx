@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { SiteHeader } from "@/components/layout/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
 
 // 헤드라인 · 숫자 · 화물 데이터
 const spaceGrotesk = Space_Grotesk({
@@ -34,8 +36,10 @@ export default function RootLayout({
       lang="ko"
       className={cn(spaceGrotesk.variable, jetbrainsMono.variable)}
     >
-      <body className="antialiased bg-background text-foreground">
-        {children}
+      <body className="antialiased bg-background text-foreground min-h-screen flex flex-col">
+        <SiteHeader />
+        <div className="flex-1">{children}</div>
+        <SiteFooter />
       </body>
     </html>
   );
