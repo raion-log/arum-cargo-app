@@ -39,9 +39,9 @@ export function SiteHeader() {
             {/* Logo */}
             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', flexShrink: 0 }}>
               <Plane style={{ width: 20, height: 20, color: '#1E90FF' }} />
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: 5 }}>
-                <span style={{ fontSize: 15, fontWeight: 700, color: 'white', letterSpacing: '-0.02em' }}>Arum</span>
-                <span style={{ fontSize: 10, fontWeight: 600, color: '#1E90FF', letterSpacing: '0.18em', textTransform: 'uppercase' }}>Cargo</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
+                <span style={{ fontSize: 18, fontWeight: 700, color: 'white', letterSpacing: '-0.02em' }}>Arum</span>
+                <span style={{ fontSize: 18, fontWeight: 600, color: '#1E90FF', letterSpacing: '0.18em', textTransform: 'uppercase' }}>Cargo</span>
               </div>
             </Link>
 
