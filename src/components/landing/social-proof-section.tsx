@@ -5,19 +5,22 @@ import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
 const CARGO_PARTNERS = [
-  'Pantos', 'CJ대한통운', 'DHL', 'FedEx', '대한항공 카고',
-  '아시아나 카고', '한진', '롯데글로벌로지스', '세방항공',
-  '카고룩스코리아', '스위스포트', 'SATS', '에어인천', '제주항공 카고',
+  { name: 'Pantos',           color: '#E31837' },
+  { name: 'CJ대한통운',       color: '#D40511' },
+  { name: 'DHL',              color: '#FFCC00', text: '#1a1a1a' },
+  { name: 'FedEx',            color: '#4D148C' },
+  { name: '대한항공 카고',    color: '#003087' },
+  { name: '아시아나 카고',    color: '#C0392B' },
+  { name: '한진',             color: '#1E3A8A' },
+  { name: '롯데글로벌로지스', color: '#ED1C24' },
+  { name: '세방항공',         color: '#1E40AF' },
+  { name: '카고룩스코리아',   color: '#1E3A8A' },
+  { name: '스위스포트',       color: '#00205B' },
+  { name: 'SATS',             color: '#003087' },
+  { name: '에어인천',         color: '#1D4ED8' },
+  { name: '제주항공 카고',    color: '#F97316' },
 ]
 
-const logoContainerVariants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.03, delayChildren: 0.3 } },
-}
-const logoItemVariants = {
-  hidden: { opacity: 0, y: 8 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' as const } },
-}
 const sectionVariants = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.12 } },
@@ -39,8 +42,8 @@ export function SocialProofSection() {
   }, [inView, count])
 
   return (
-    <section className="py-24 px-4 bg-background">
-      <div className="mx-auto max-w-6xl">
+    <section className="py-24 bg-background overflow-hidden">
+      <div className="mx-auto max-w-6xl px-4">
         <motion.div
           ref={ref}
           variants={sectionVariants}
@@ -94,29 +97,44 @@ export function SocialProofSection() {
             </div>
           </motion.div>
 
-          {/* Logo wall */}
-          <motion.div variants={fadeUpVariants}>
-            <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-6">
-              파트너 기업
-            </p>
-            <motion.div
-              variants={logoContainerVariants}
-              className="flex flex-wrap gap-3"
-            >
-              {CARGO_PARTNERS.map((name) => (
-                <motion.span
-                  key={name}
-                  variants={logoItemVariants}
-                  className="inline-flex rounded-sm border border-border bg-card px-5 py-2 text-base font-medium text-muted-foreground transition-all duration-300 hover:border-[var(--arum-sky)]/40 hover:text-foreground"
-                >
-                  {name}
-                </motion.span>
-              ))}
-            </motion.div>
-          </motion.div>
-
+          {/* 파트너 기업 레이블 */}
+          <motion.p
+            variants={fadeUpVariants}
+            className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-6"
+          >
+            파트너 기업
+          </motion.p>
         </motion.div>
       </div>
+
+      {/* Full-width marquee */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ delay: 0.5, duration: 0.6 }}
+        className="overflow-hidden"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)',
+        }}
+      >
+        <div className="marquee-track py-2">
+          {[...CARGO_PARTNERS, ...CARGO_PARTNERS].map((p, i) => (
+            <div
+              key={i}
+              className="flex-shrink-0 flex items-center bg-white rounded-lg px-5 py-3 mx-2 shadow-sm border border-gray-100"
+              style={{ borderLeft: `3px solid ${p.color}` }}
+            >
+              <span
+                className="text-sm font-semibold whitespace-nowrap"
+                style={{ color: p.text ?? '#1a1a1a' }}
+              >
+                {p.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </motion.div>
     </section>
   )
 }

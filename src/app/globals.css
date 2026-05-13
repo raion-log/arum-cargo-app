@@ -81,6 +81,20 @@
   }
 }
 
+/* 파트너 로고 마퀴 */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: inline-flex;
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
 /* Gradient Blob 애니메이션 */
 @keyframes arum-blob-drift {
   0%   { transform: translate(0, 0) scale(1); }
