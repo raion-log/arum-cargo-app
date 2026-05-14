@@ -70,13 +70,13 @@ export function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05, duration: 0.4, ease: 'easeOut' as const }}
-          className="inline-flex items-center gap-2 mb-5 rounded-sm border border-white/15 bg-white/5 px-3 py-1.5"
+          className="inline-flex items-center gap-2 mb-5 rounded-sm border border-white/15 bg-white/5 px-4 py-2"
         >
-          <span className="relative flex h-1.5 w-1.5">
+          <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
           </span>
-          <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-white/55">
+          <span className="text-sm font-semibold tracking-wide text-white/70">
             똑똑한 카고인들의 업계 정보 모으는 방법
           </span>
         </motion.div>
@@ -85,10 +85,10 @@ export function HeroSection() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6, ease: 'easeOut' as const }}
-          className="font-bold leading-[1.1] text-white mb-4 text-5xl sm:text-6xl lg:text-[5.5rem]"
+          className="font-bold leading-[1.15] text-white mb-4 text-[2.2rem] sm:text-[3rem] lg:text-[3.8rem]"
         >
-          카고 업계 주도하는 사람들의<br />
-          <span className="text-[var(--arum-sky)]">공통된 아침 5분 루틴</span>
+          <span className="block">카고 업계 주도하는 사람들의</span>
+          <span className="block text-[var(--arum-sky)]">공통된 아침 5분 루틴</span>
         </motion.h1>
 
         {/* One-liner */}
