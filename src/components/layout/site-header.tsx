@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { Menu, X, Plane } from 'lucide-react'
 
 const navLinks = [
@@ -13,6 +14,8 @@ const navLinks = [
 export function SiteHeader() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const pathname = usePathname()
+  const isHome = pathname === '/'
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 32)
@@ -28,9 +31,9 @@ export function SiteHeader() {
           top: 0, left: 0, right: 0,
           zIndex: 50,
           transition: 'background 0.3s, border-color 0.3s',
-          background: scrolled ? 'rgba(10,22,40,0.92)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
+          background: (!isHome || scrolled) ? 'rgba(10,22,40,0.97)' : 'transparent',
+          backdropFilter: (!isHome || scrolled) ? 'blur(12px)' : 'none',
+          borderBottom: (!isHome || scrolled) ? '1px solid rgba(255,255,255,0.08)' : '1px solid transparent',
         }}
       >
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px' }}>
