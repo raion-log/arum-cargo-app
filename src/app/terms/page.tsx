@@ -22,7 +22,7 @@ export default function TermsPage() {
         </section>
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">제5조 (문의)</h2>
-          <p><a href="mailto:uvengersuvengers@gmail.com" className="text-[var(--arum-sky)] hover:underline">uvengersuvengers@gmail.com</a></p>
+          <p><a href="mailto:raion.log@gmail.com" className="text-[var(--arum-sky)] hover:underline">raion.log@gmail.com</a></p>
         </section>
       </div>
     </main>

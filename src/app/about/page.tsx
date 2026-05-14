@@ -24,7 +24,7 @@ export default function AboutPage() {
         <section>
           <h2 className="text-xl font-semibold mb-2">연락처</h2>
           <p className="text-muted-foreground">
-            문의: <a href="mailto:uvengersuvengers@gmail.com" className="text-[var(--arum-sky)] hover:underline">uvengersuvengers@gmail.com</a>
+            문의: <a href="mailto:raion.log@gmail.com" className="text-[var(--arum-sky)] hover:underline">raion.log@gmail.com</a>
           </p>
         </section>
       </div>

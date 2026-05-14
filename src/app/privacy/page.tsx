@@ -18,11 +18,11 @@ export default function PrivacyPage() {
         </section>
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">4. 수신거부</h2>
-          <p>매 이메일 하단의 수신거부 링크를 클릭하거나 <a href="mailto:uvengersuvengers@gmail.com" className="text-[var(--arum-sky)] hover:underline">uvengersuvengers@gmail.com</a>으로 요청하시면 즉시 처리됩니다.</p>
+          <p>매 이메일 하단의 수신거부 링크를 클릭하거나 <a href="mailto:raion.log@gmail.com" className="text-[var(--arum-sky)] hover:underline">raion.log@gmail.com</a>으로 요청하시면 즉시 처리됩니다.</p>
         </section>
         <section>
           <h2 className="text-base font-semibold text-foreground mb-2">5. 문의</h2>
-          <p><a href="mailto:uvengersuvengers@gmail.com" className="text-[var(--arum-sky)] hover:underline">uvengersuvengers@gmail.com</a></p>
+          <p><a href="mailto:raion.log@gmail.com" className="text-[var(--arum-sky)] hover:underline">raion.log@gmail.com</a></p>
         </section>
       </div>
     </main>
