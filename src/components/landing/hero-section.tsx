@@ -77,7 +77,7 @@ export function HeroSection() {
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
           </span>
           <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-white/55">
-            11년차 현직자가 직접 씁니다
+            똑똑한 카고인들의 업계 정보 모으는 방법
           </span>
         </motion.div>
 
@@ -85,17 +85,17 @@ export function HeroSection() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6, ease: 'easeOut' as const }}
-          className="font-bold leading-[1.05] text-white mb-4 text-5xl sm:text-6xl lg:text-[5.5rem]"
+          className="font-bold leading-[1.1] text-white mb-4 text-5xl sm:text-6xl lg:text-[5.5rem]"
         >
-          카고 업계 흐름,{' '}
-          <span className="text-[var(--arum-sky)]">5분이면 됩니다</span>
+          카고 업계 주도하는 사람들의<br />
+          <span className="text-[var(--arum-sky)]">공통된 아침 5분 루틴</span>
         </motion.h1>
 
         {/* One-liner */}
         <motion.p
           initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.28, duration: 0.5, ease: 'easeOut' as const }}
-          className="text-base text-white/50 mb-7 max-w-lg"
+          className="text-lg text-white/55 mb-8 max-w-xl"
         >
           현직자가 직접 고른 뉴스 5건과 채용 공고를 매일 07:00에 보내드립니다.
         </motion.p>
@@ -104,11 +104,11 @@ export function HeroSection() {
         <motion.div
           initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.38, duration: 0.5, ease: 'easeOut' as const }}
-          className="flex flex-wrap justify-center gap-x-7 gap-y-2 mb-8"
+          className="flex items-center justify-center gap-8 mb-9"
         >
           {BENEFITS.map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-1.5 text-sm text-white/50">
-              <Icon className="h-3.5 w-3.5 text-[var(--arum-sky)] flex-shrink-0" />
+            <div key={text} className="flex items-center gap-2 text-base text-white/55">
+              <Icon className="h-4 w-4 text-[var(--arum-sky)] flex-shrink-0" />
               {text}
             </div>
           ))}
