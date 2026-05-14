@@ -86,10 +86,10 @@ const CAREER_LINKS = [
 
 export default function JobsPage() {
   return (
-    <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-[88px] pb-10">
+    <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-10" style={{ paddingTop: 96 }}>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold mb-1">항공 화물 채용</h1>
+          <h1 className="text-3xl font-bold mb-1">항공 화물 채용</h1>
           <p className="text-sm text-muted-foreground">{MOCK_JOBS.length}건 등록</p>
         </div>
       </div>

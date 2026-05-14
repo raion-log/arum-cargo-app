@@ -81,9 +81,9 @@ export default function NewsPage() {
   const rest = MOCK_ARTICLES.filter((a) => !a.isEditorPick)
 
   return (
-    <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pt-[88px] pb-10">
+    <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pb-10" style={{ paddingTop: 96 }}>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-1">항공 화물 뉴스</h1>
+        <h1 className="text-3xl font-bold mb-1">항공 화물 뉴스</h1>
         <p className="text-sm text-muted-foreground">
           {new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
         </p>
