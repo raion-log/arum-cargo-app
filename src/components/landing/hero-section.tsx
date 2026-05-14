@@ -77,7 +77,7 @@ export function HeroSection() {
             <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-400" />
           </span>
           <span className="text-[11px] font-bold tracking-[0.18em] uppercase text-white/55">
-            현직자·취준생 482명이 선택한
+            11년차 현직자가 직접 씁니다
           </span>
         </motion.div>
 
@@ -85,7 +85,7 @@ export function HeroSection() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6, ease: 'easeOut' as const }}
-          className="font-bold leading-[1.1] text-white mb-4 text-4xl sm:text-5xl lg:text-[3.4rem]"
+          className="font-bold leading-[1.05] text-white mb-4 text-5xl sm:text-6xl lg:text-[5.5rem]"
         >
           카고 업계 흐름,{' '}
           <span className="text-[var(--arum-sky)]">5분이면 됩니다</span>

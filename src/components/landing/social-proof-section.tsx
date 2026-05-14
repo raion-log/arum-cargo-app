@@ -5,20 +5,18 @@ import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
 const CARGO_PARTNERS = [
-  { name: 'Pantos',           color: '#E31837' },
-  { name: 'CJ대한통운',       color: '#D40511' },
-  { name: 'DHL',              color: '#FFCC00', text: '#1a1a1a' },
-  { name: 'FedEx',            color: '#4D148C' },
-  { name: '대한항공 카고',    color: '#003087' },
-  { name: '아시아나 카고',    color: '#C0392B' },
-  { name: '한진',             color: '#1E3A8A' },
-  { name: '롯데글로벌로지스', color: '#ED1C24' },
-  { name: '세방항공',         color: '#1E40AF' },
-  { name: '카고룩스코리아',   color: '#1E3A8A' },
-  { name: '스위스포트',       color: '#00205B' },
-  { name: 'SATS',             color: '#003087' },
-  { name: '에어인천',         color: '#1D4ED8' },
-  { name: '제주항공 카고',    color: '#F97316' },
+  { name: 'DHL',           domain: 'dhl.com' },
+  { name: 'FedEx',         domain: 'fedex.com' },
+  { name: 'CJ대한통운',    domain: 'cjlogistics.com' },
+  { name: '대한항공 카고', domain: 'koreanair.com' },
+  { name: 'Pantos',        domain: 'pantoslogistics.com' },
+  { name: '아시아나 카고', domain: 'flyasiana.com' },
+  { name: '스위스포트',    domain: 'swissport.com' },
+  { name: 'SATS',          domain: 'sats.com.sg' },
+  { name: '제주항공 카고', domain: 'jejuair.net' },
+  { name: '카고룩스코리아',domain: 'cargolux.com' },
+  { name: '롯데글로벌로지스', domain: 'lotteglogis.com' },
+  { name: '한진',          domain: 'hanjin.com' },
 ]
 
 const sectionVariants = {
@@ -122,13 +120,18 @@ export function SocialProofSection() {
           {[...CARGO_PARTNERS, ...CARGO_PARTNERS].map((p, i) => (
             <div
               key={i}
-              className="flex-shrink-0 flex items-center bg-white rounded-lg px-5 py-3 mx-2 shadow-sm border border-gray-100"
-              style={{ borderLeft: `3px solid ${p.color}` }}
+              className="flex-shrink-0 flex items-center gap-3 bg-white rounded-xl px-5 py-3 mx-2 shadow-sm border border-gray-100"
             >
-              <span
-                className="text-sm font-semibold whitespace-nowrap"
-                style={{ color: p.text ?? '#1a1a1a' }}
-              >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`https://logo.clearbit.com/${p.domain}`}
+                alt={p.name}
+                width={24}
+                height={24}
+                className="h-6 w-6 object-contain rounded-sm"
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+              />
+              <span className="text-sm font-semibold whitespace-nowrap text-gray-800">
                 {p.name}
               </span>
             </div>
