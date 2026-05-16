@@ -124,7 +124,7 @@ export function SocialProofSection() {
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`https://logo.clearbit.com/${p.domain}`}
+                src={`https://www.google.com/s2/favicons?domain=${p.domain}&sz=64`}
                 alt={p.name}
                 width={24}
                 height={24}
