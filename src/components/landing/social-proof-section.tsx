@@ -9,7 +9,7 @@ const CARGO_PARTNERS = [
   { name: 'FedEx',         domain: 'fedex.com' },
   { name: 'CJ대한통운',    domain: 'cjlogistics.com' },
   { name: '대한항공 카고', domain: 'koreanair.com' },
-  { name: 'Pantos',        domain: 'pantoslogistics.com' },
+  { name: 'Pantos',        domain: 'pantos.com' },
   { name: '아시아나 카고', domain: 'flyasiana.com' },
   { name: '스위스포트',    domain: 'swissport.com' },
   { name: 'SATS',          domain: 'sats.com.sg' },
@@ -18,6 +18,32 @@ const CARGO_PARTNERS = [
   { name: '롯데글로벌로지스', domain: 'lotteglogis.com' },
   { name: '한진',          domain: 'hanjin.com' },
 ]
+
+const PALETTE = ['#1E90FF','#0EA5E9','#6366F1','#8B5CF6','#EC4899','#F59E0B','#10B981','#EF4444']
+
+function PartnerLogo({ name, domain }: { name: string; domain: string }) {
+  const color = PALETTE[name.charCodeAt(0) % PALETTE.length]
+  const initial = name.replace(/[^a-zA-Z가-힣]/g, '').charAt(0).toUpperCase()
+  return (
+    <span style={{ position: 'relative', width: 24, height: 24, flexShrink: 0, display: 'inline-flex' }}>
+      {/* fallback: colored initial */}
+      <span style={{
+        position: 'absolute', inset: 0, borderRadius: 4,
+        background: color, display: 'flex', alignItems: 'center',
+        justifyContent: 'center', fontSize: 11, fontWeight: 700, color: 'white',
+      }}>{initial}</span>
+      {/* favicon overlays fallback; hidden on error */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
+        alt={name}
+        width={24} height={24}
+        style={{ position: 'absolute', inset: 0, width: 24, height: 24, objectFit: 'contain', borderRadius: 4 }}
+        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
+      />
+    </span>
+  )
+}
 
 const sectionVariants = {
   hidden: {},
@@ -122,15 +148,7 @@ export function SocialProofSection() {
               key={i}
               className="flex-shrink-0 flex items-center gap-3 bg-white rounded-xl px-5 py-3 mx-2 shadow-sm border border-gray-100"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`https://www.google.com/s2/favicons?domain=${p.domain}&sz=64`}
-                alt={p.name}
-                width={24}
-                height={24}
-                className="h-6 w-6 object-contain rounded-sm"
-                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none' }}
-              />
+              <PartnerLogo name={p.name} domain={p.domain} />
               <span className="text-sm font-semibold whitespace-nowrap text-gray-800">
                 {p.name}
               </span>
