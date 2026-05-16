@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight, Newspaper, Briefcase, Clock } from 'lucide-react'
+import { useState } from 'react'
+import { ArrowRight, Newspaper, Briefcase, Clock, Loader2, CheckCircle2 } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const BENEFITS = [
@@ -35,6 +36,35 @@ function RadarDecor() {
 }
 
 export function HeroSection() {
+  const [email, setEmail] = useState('')
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
+  const [message, setMessage] = useState('')
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!email || status === 'loading') return
+    setStatus('loading')
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      const data = await res.json()
+      if (res.ok) {
+        setStatus('success')
+        setMessage(data.message ?? '구독 신청 완료!')
+        setEmail('')
+      } else {
+        setStatus('error')
+        setMessage(data.error ?? '오류가 발생했습니다. 다시 시도해주세요.')
+      }
+    } catch {
+      setStatus('error')
+      setMessage('네트워크 오류가 발생했습니다.')
+    }
+  }
+
   return (
     <section
       className="relative overflow-hidden bg-[var(--arum-ink)]"
@@ -120,25 +150,42 @@ export function HeroSection() {
           transition={{ delay: 0.48, duration: 0.5, ease: 'easeOut' as const }}
           className="w-full max-w-xl"
         >
-          <div id="subscribe" className="flex flex-col sm:flex-row gap-3 mb-4">
+          <form id="subscribe" onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 mb-4">
             <input
               type="email"
+              required
+              value={email}
+              onChange={e => { setEmail(e.target.value); if (status !== 'idle') setStatus('idle') }}
               placeholder="이메일 주소를 입력하세요"
-              className="flex-1 rounded-md border border-white/15 px-5 py-4 text-base text-white placeholder:text-white/35 outline-none transition-all"
+              disabled={status === 'loading' || status === 'success'}
+              className="flex-1 rounded-md border border-white/15 px-5 py-4 text-base text-white placeholder:text-white/35 outline-none transition-all disabled:opacity-50"
               style={{ background: 'rgba(255,255,255,0.07)', fontSize: 16 }}
               onFocus={e => { e.currentTarget.style.borderColor = '#1E90FF'; e.currentTarget.style.boxShadow = '0 0 14px rgba(30,144,255,0.25)' }}
               onBlur={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.boxShadow = 'none' }}
             />
             <button
-              className="group relative overflow-hidden rounded-md px-8 py-4 text-base font-semibold text-white whitespace-nowrap transition-all duration-300 active:scale-95"
-              style={{ background: '#1E90FF' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(30,144,255,0.45)' }}
+              type="submit"
+              disabled={status === 'loading' || status === 'success'}
+              className="group relative overflow-hidden rounded-md px-8 py-4 text-base font-semibold text-white whitespace-nowrap transition-all duration-300 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+              style={{ background: status === 'success' ? '#10b981' : '#1E90FF' }}
+              onMouseEnter={e => { if (status !== 'loading' && status !== 'success') (e.currentTarget as HTMLElement).style.boxShadow = '0 0 20px rgba(30,144,255,0.45)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = 'none' }}
             >
               <span className="absolute inset-0 translate-y-full bg-white/15 transition-transform duration-300 group-hover:translate-y-0" />
-              <span className="relative">무료 구독하기</span>
+              <span className="relative flex items-center gap-2">
+                {status === 'loading' && <Loader2 className="h-4 w-4 animate-spin" />}
+                {status === 'success' && <CheckCircle2 className="h-4 w-4" />}
+                {status === 'loading' ? '처리 중...' : status === 'success' ? '구독 완료!' : '무료 구독하기'}
+              </span>
             </button>
-          </div>
+          </form>
+
+          {/* 상태 메시지 */}
+          {message && (
+            <p className={`text-sm mb-3 text-center ${status === 'success' ? 'text-emerald-400' : 'text-red-400'}`}>
+              {message}
+            </p>
+          )}
 
           {/* Social proof */}
           <div className="flex flex-wrap items-center justify-center gap-4">
