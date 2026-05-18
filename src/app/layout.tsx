@@ -24,6 +24,23 @@ export const metadata: Metadata = {
   description:
     "11년차 항공 화물 현직자가 매일 아침 정리해주는 업계 뉴스와 카고 채용 허브",
   keywords: ["항공화물", "카고", "AWB", "포워더", "콘솔사", "항공물류 채용"],
+  openGraph: {
+    title: "아름 카고 — 항공 화물 업계 뉴스 + 채용",
+    description: "매일 07:00, 카고 현직자 큐레이션 뉴스 5건 + 채용 공고",
+    url: "https://arumcargo-app.vercel.app",
+    siteName: "Arum Cargo",
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "아름 카고 — 항공 화물 업계 뉴스 + 채용",
+    description: "매일 07:00, 카고 현직자 큐레이션 뉴스 5건 + 채용 공고",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({

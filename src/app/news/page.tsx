@@ -1,14 +1,5 @@
-import { NewsCard, EditorPickBanner } from '@/components/news/news-card'
-import type { NewsArticle, NewsCategory } from '@/components/news/news-card'
-
-const CATEGORIES: { value: NewsCategory | 'all'; label: string }[] = [
-  { value: 'all', label: '전체' },
-  { value: 'freight_market', label: '운임·시황' },
-  { value: 'airline', label: '항공사' },
-  { value: 'airport_infra', label: '공항·인프라' },
-  { value: 'regulation', label: '규제·정책' },
-  { value: 'global', label: '글로벌' },
-]
+import { NewsFilterList } from '@/components/news/news-filter-list'
+import type { NewsArticle } from '@/components/news/news-card'
 
 const MOCK_ARTICLES: NewsArticle[] = [
   {
@@ -76,9 +67,39 @@ const MOCK_ARTICLES: NewsArticle[] = [
   },
 ]
 
-export default function NewsPage() {
-  const editorPick = MOCK_ARTICLES.find((a) => a.isEditorPick)
-  const rest = MOCK_ARTICLES.filter((a) => !a.isEditorPick)
+async function getArticles(): Promise<NewsArticle[]> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return MOCK_ARTICLES
+  }
+  try {
+    const { createServerClient } = await import('@/lib/supabase')
+    const supabase = createServerClient()
+    const { data } = await supabase
+      .from('news_articles')
+      .select('id,title,summary_ko,source_name,source_url,category,published_at,is_editor_pick,editor_comment,editor_tone')
+      .eq('is_approved', true)
+      .order('published_at', { ascending: false })
+      .limit(30)
+    if (!data?.length) return MOCK_ARTICLES
+    return data.map((r) => ({
+      id: r.id,
+      title: r.title,
+      summaryKo: r.summary_ko ?? '',
+      sourceName: r.source_name,
+      sourceUrl: r.source_url,
+      category: r.category,
+      publishedAt: r.published_at,
+      isEditorPick: r.is_editor_pick,
+      editorComment: r.editor_comment ?? undefined,
+      editorTone: r.editor_tone ?? undefined,
+    }))
+  } catch {
+    return MOCK_ARTICLES
+  }
+}
+
+export default async function NewsPage() {
+  const articles = await getArticles()
 
   return (
     <main className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 pb-10" style={{ paddingTop: 96 }}>
@@ -88,32 +109,7 @@ export default function NewsPage() {
           {new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' })}
         </p>
       </div>
-
-      {/* 카테고리 필터 */}
-      <div className="flex gap-2 flex-wrap mb-6">
-        {CATEGORIES.map(({ value, label }) => (
-          <button
-            key={value}
-            className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
-              value === 'all'
-                ? 'bg-[var(--arum-sky)] text-white border-[var(--arum-sky)]'
-                : 'border-border text-muted-foreground hover:border-[var(--arum-sky)] hover:text-[var(--arum-sky)]'
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </div>
-
-      {/* 에디터 Pick */}
-      {editorPick && <EditorPickBanner article={editorPick} />}
-
-      {/* 뉴스 목록 */}
-      <div className="flex flex-col gap-3">
-        {rest.map((article) => (
-          <NewsCard key={article.id} article={article} />
-        ))}
-      </div>
+      <NewsFilterList articles={articles} />
     </main>
   )
 }

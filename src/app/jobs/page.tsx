@@ -1,15 +1,5 @@
-import { JobCard } from '@/components/jobs/job-card'
-import type { JobPost, CargoJobCategory } from '@/components/jobs/job-card'
-import { ExternalLink } from 'lucide-react'
-
-const JOB_FILTERS: { value: CargoJobCategory | 'all'; label: string }[] = [
-  { value: 'all', label: '전체' },
-  { value: 'sales_offer', label: '영업·오퍼' },
-  { value: 'customs', label: '통관·수출입' },
-  { value: 'intl_logistics', label: '국제물류' },
-  { value: 'airport_resident', label: '공항상주' },
-  { value: 'other_cargo', label: '기타카고' },
-]
+import { JobFilterList } from '@/components/jobs/job-filter-list'
+import type { JobPost } from '@/components/jobs/job-card'
 
 const MOCK_JOBS: JobPost[] = [
   {
@@ -79,98 +69,49 @@ const MOCK_JOBS: JobPost[] = [
   },
 ]
 
-const CAREER_LINKS = [
-  '대한항공 카고', '아시아나카고', '에어인천', '제주항공',
-  '판토스', 'CJ대한통운', '현대글로비스', '롯데글로벌로지스',
-]
+async function getJobs(): Promise<JobPost[]> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return MOCK_JOBS
+  }
+  try {
+    const { createServerClient } = await import('@/lib/supabase')
+    const supabase = createServerClient()
+    const { data } = await supabase
+      .from('job_posts')
+      .select('id,title,company_name,source_url,job_category,employment_type,location,career_min_years,career_max_years,deadline_at,trust_score')
+      .eq('is_approved', true)
+      .eq('is_archived', false)
+      .order('created_at', { ascending: false })
+      .limit(50)
+    if (!data?.length) return MOCK_JOBS
+    return data.map((r) => ({
+      id: r.id,
+      title: r.title,
+      companyName: r.company_name,
+      sourceUrl: r.source_url,
+      jobCategory: r.job_category,
+      employmentType: r.employment_type,
+      location: r.location ?? undefined,
+      careerMinYears: r.career_min_years ?? undefined,
+      careerMaxYears: r.career_max_years ?? undefined,
+      deadlineAt: r.deadline_at ?? undefined,
+      trustScore: r.trust_score ?? undefined,
+    }))
+  } catch {
+    return MOCK_JOBS
+  }
+}
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const jobs = await getJobs()
+
   return (
     <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-10" style={{ paddingTop: 96 }}>
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold mb-1">항공 화물 채용</h1>
-          <p className="text-sm text-muted-foreground">{MOCK_JOBS.length}건 등록</p>
-        </div>
+      <div className="mb-6">
+        <h1 className="text-3xl font-bold mb-1">항공 화물 채용</h1>
+        <p className="text-sm text-muted-foreground">{jobs.length}건 등록</p>
       </div>
-
-      <div className="flex gap-6">
-        {/* 필터 사이드바 */}
-        <aside className="hidden lg:block w-48 flex-shrink-0">
-          <div className="rounded-xl border border-border bg-card p-4 sticky top-20">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">카고 직군</p>
-            <div className="flex flex-col gap-1">
-              {JOB_FILTERS.map(({ value, label }) => (
-                <button
-                  key={value}
-                  className={`text-left text-sm px-2 py-1.5 rounded-md transition-colors ${
-                    value === 'all'
-                      ? 'bg-[var(--arum-sky)]/10 text-[var(--arum-sky)] font-medium'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
-                  }`}
-                >
-                  {label}
-                </button>
-              ))}
-            </div>
-
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mt-5 mb-3">경력</p>
-            {['신입', '1~2년', '3~5년', '6~10년', '10년+'].map((level) => (
-              <button key={level} className="block w-full text-left text-sm px-2 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted">
-                {level}
-              </button>
-            ))}
-
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mt-5 mb-3">마감</p>
-            {['3일 내', '7일 내', '14일 내', '전체'].map((d) => (
-              <button key={d} className="block w-full text-left text-sm px-2 py-1.5 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted">
-                {d}
-              </button>
-            ))}
-          </div>
-        </aside>
-
-        {/* 공고 목록 */}
-        <div className="flex-1">
-          {/* 모바일 필터 chips */}
-          <div className="flex gap-2 flex-wrap mb-4 lg:hidden">
-            {JOB_FILTERS.map(({ value, label }) => (
-              <button
-                key={value}
-                className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
-                  value === 'all'
-                    ? 'bg-[var(--arum-sky)] text-white border-[var(--arum-sky)]'
-                    : 'border-border text-muted-foreground'
-                }`}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {MOCK_JOBS.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
-          </div>
-
-          {/* 공식 채용 딥링크 */}
-          <div className="mt-10">
-            <h2 className="text-sm font-semibold mb-3 text-muted-foreground uppercase tracking-wide">주요 화물사 공식 채용 바로가기</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {CAREER_LINKS.map((name) => (
-                <a
-                  key={name}
-                  href="#"
-                  className="flex items-center justify-between gap-1 rounded-lg border border-border bg-card px-3 py-2 text-xs text-muted-foreground hover:border-[var(--arum-sky)] hover:text-[var(--arum-sky)] transition-colors"
-                >
-                  {name} <ExternalLink className="h-3 w-3 flex-shrink-0" />
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      <JobFilterList jobs={jobs} />
     </main>
   )
 }

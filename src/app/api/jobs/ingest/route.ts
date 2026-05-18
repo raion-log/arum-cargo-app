@@ -1,4 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
+
+export async function GET(req: NextRequest) {
+  const auth = req.headers.get('authorization') ?? ''
+  const cronSecret = process.env.CRON_SECRET
+  if (!cronSecret || auth !== `Bearer ${cronSecret}`) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  const fakePost = new NextRequest(req.url, { method: 'POST', headers: { 'x-cron-secret': cronSecret } })
+  return POST(fakePost)
+}
 import crypto from 'crypto'
 import { createServerClient } from '@/lib/supabase'
 
